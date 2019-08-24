@@ -10,7 +10,7 @@ namespace JuLiMl.Selenium
 {
     public interface IEventTabellenParser
     {
-        List<Event> ParseEventTabellen(ParserResults parserResults);
+        List<Veranstaltung> ParseEventTabellen(ParserResults parserResults);
     }
 
     public class EventTabellenParser : IEventTabellenParser
@@ -24,10 +24,12 @@ namespace JuLiMl.Selenium
             _titleRegex = new Regex("Veranstaltungsdetails für (.*) anzeigen", RegexOptions.Singleline);
         }
 
-        public List<Event> ParseEventTabellen(ParserResults parserResults)
+        public List<Veranstaltung> ParseEventTabellen(ParserResults parserResults)
         {
+            if(parserResults.EventText.Contains("Es gibt keine bevorstehenden Veranstaltungen.")) return new List<Veranstaltung>(0);
+            
             var eventTexte = SepariereVeranstalltungen(parserResults.EventText);
-            var events = new List<Event>();
+            var events = new List<Veranstaltung>();
             for (var i = 0; i < eventTexte.Count; i++)
             {
                 var eventTitle = ExtrahiereEventTitle(parserResults.LinkTexte[i]);
@@ -69,9 +71,9 @@ namespace JuLiMl.Selenium
             return _titleRegex.Match(eventTitleText).Groups[1].Value.Trim();
         }
 
-        private Event ParseEineVeranstalltung(string eventText, string eventTitle)
+        private Veranstaltung ParseEineVeranstalltung(string eventText, string eventTitle)
         {
-            var veranstaltung = new Event();
+            var veranstaltung = new Veranstaltung();
             var lines = eventText.Trim().Split(Environment.NewLine);
             if (lines.Length != 4) throw new InvalidDataException();
 
@@ -96,12 +98,17 @@ namespace JuLiMl.Selenium
         }
     }
 
-    public class Event
+    public class Veranstaltung
     {
         public string Title { get; set; }
         public DateTime ZeitStart { get; set; }
         public DateTime ZeitEnde { get; set; }
         public string Ort { get; set; }
         public string Stadt { get; set; }
+
+        public override string ToString()
+        {
+            return Title;
+        }
     }
 }
