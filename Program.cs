@@ -1,4 +1,4 @@
-﻿using JuLiMl.Services;
+﻿using JuLiMl.Selenium;
 using Microsoft.Extensions.DependencyInjection;
 using StructureMap;
 
@@ -10,7 +10,7 @@ namespace JuLiMl
         {
             using (var container = InitializeDependencyInjection())
             {
-                var mainRunner = container.GetInstance<IMainRunner>();
+                var mainRunner = container.GetInstance<ISeleniumRunner>();
                 mainRunner.Run();
             }
         }
@@ -27,7 +27,7 @@ namespace JuLiMl
                     _.AssemblyContainingType(typeof(Program));
                     _.WithDefaultConventions();
                 });
-
+                config.For<ISeleniumInstanceService>().Singleton().Use<SeleniumInstanceService>();
                 config.Populate(services);
             });
 

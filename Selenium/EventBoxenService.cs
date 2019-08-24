@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.Primitives;
 
-namespace JuLiMl.Services
+namespace JuLiMl.Selenium
 {
     public interface IEventBoxenService
     {
