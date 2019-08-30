@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using JuLiMl.OutputServices;
+using Microsoft.Extensions.Logging;
 
 namespace JuLiMl.Selenium
 {
@@ -12,19 +15,25 @@ namespace JuLiMl.Selenium
         private readonly ISeleniumService _seleniumService;
         private readonly ISeleniumInstanceService _seleniumInstanceService;
         private readonly IEventTabellenParser _eventTabellenParser;
+        private readonly IHtmlTabelleService _htmlTabelleService;
+        private readonly ILogger<SeleniumRunner> _logger;
 
         public SeleniumRunner(ISeleniumService seleniumService, ISeleniumInstanceService seleniumInstanceService, 
-            IEventTabellenParser eventTabellenParser)
+            IEventTabellenParser eventTabellenParser, IHtmlTabelleService htmlTabelleService, ILogger<SeleniumRunner> logger)
         {
             _seleniumService = seleniumService;
             _seleniumInstanceService = seleniumInstanceService;
             _eventTabellenParser = eventTabellenParser;
+            _htmlTabelleService = htmlTabelleService;
+            _logger = logger;
         }
 
         public void Run()
         {
+            _logger.LogInformation($"Start am {DateTime.Now.ToShortDateString()} um {DateTime.Now.ToShortTimeString()} Uhr");
             var pagesZumParsen = new List<string>()
             {
+                "julisnrw",
                 "julisdortmund",
                 "julisbochum",
                 "julisessen",
@@ -43,33 +52,43 @@ namespace JuLiMl.Selenium
             {
                 foreach (var curPage in pagesZumParsen)
                 {
-                    var curUrl = GetUrlOfPage(curPage);
+                    var curUrl = GetMobileUrlOfPage(curPage);
                     eventTabellen = _seleniumService.IdentifiziereEventTabelle(curUrl);
                     var eventsDieserUrl = _eventTabellenParser.ParseEventTabellen(eventTabellen);
-                    events.Add(new Verbandsebene(curPage, eventsDieserUrl));
+                    events.Add(new Verbandsebene(curPage, GetDesktopUrlOfPage(curPage), eventsDieserUrl));
                 }
             }
             finally
             {
                 _seleniumInstanceService.Dispose();
             }
+
+            _htmlTabelleService.BaueHtmlTabelle(events);
         }
 
-        private string GetUrlOfPage(string pageName)
+        private string GetMobileUrlOfPage(string pageName)
         {
+            //return $"https://mobile.facebook.com/{pageName}?v=events&is_past=1";
             return $"https://mobile.facebook.com/pg/{pageName}/events/";
+        }
+
+        private string GetDesktopUrlOfPage(string pageName)
+        {
+            return $"https://facebook.com/pg/{pageName}/events/";
         }
     }
 
     public class Verbandsebene
     {
-        public Verbandsebene(string name, List<Veranstaltung> veranstaltungen)
+        public Verbandsebene(string name, string facebookDesktopUrl, List<Veranstaltung> veranstaltungen)
         {
             Name = name;
+            FacebookDesktopUrl = facebookDesktopUrl;
             Veranstaltungen = veranstaltungen;
         }
 
         public string Name { get; set; }
+        public string FacebookDesktopUrl { get; set; }
         public List<Veranstaltung> Veranstaltungen { get; set; }
 
         public override string ToString()

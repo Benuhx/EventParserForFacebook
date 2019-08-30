@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using Microsoft.Extensions.Logging;
 
 namespace JuLiMl.Selenium
 {
@@ -15,25 +16,35 @@ namespace JuLiMl.Selenium
 
     public class EventTabellenParser : IEventTabellenParser
     {
+        private readonly ILogger<EventTabellenParser> _logger;
         private readonly Regex _datumZeitStringRegex;
         private readonly Regex _titleRegex;
 
-        public EventTabellenParser()
+        public EventTabellenParser(ILogger<EventTabellenParser> logger)
         {
+            _logger = logger;
             _datumZeitStringRegex = new Regex("(.*) von (.*) bis (.*) UTC .*", RegexOptions.IgnorePatternWhitespace);
             _titleRegex = new Regex("Veranstaltungsdetails für (.*) anzeigen", RegexOptions.Singleline);
         }
 
         public List<Veranstaltung> ParseEventTabellen(ParserResults parserResults)
         {
-            if(parserResults.EventText.Contains("Es gibt keine bevorstehenden Veranstaltungen.")) return new List<Veranstaltung>(0);
-            
+            if (parserResults.EventText.Contains("Es gibt keine bevorstehenden Veranstaltungen."))
+                return new List<Veranstaltung>(0);
+
             var eventTexte = SepariereVeranstalltungen(parserResults.EventText);
             var events = new List<Veranstaltung>();
             for (var i = 0; i < eventTexte.Count; i++)
             {
-                var eventTitle = ExtrahiereEventTitle(parserResults.LinkTexte[i]);
-                events.Add(ParseEineVeranstalltung(eventTexte[i], eventTitle));
+                try
+                {
+                    var eventTitle = ExtrahiereEventTitle(parserResults.LinkTexte[i]);
+                    events.Add(ParseEineVeranstalltung(eventTexte[i], eventTitle));
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e.ToString());
+                }
             }
 
             return events;
@@ -74,8 +85,16 @@ namespace JuLiMl.Selenium
         private Veranstaltung ParseEineVeranstalltung(string eventText, string eventTitle)
         {
             var veranstaltung = new Veranstaltung();
-            var lines = eventText.Trim().Split(Environment.NewLine);
-            if (lines.Length != 4) throw new InvalidDataException();
+            var lines = eventText.Trim().Split(Environment.NewLine).ToList();
+            if (lines.Count == 3)
+            {
+                _logger.LogWarning("Im EventText fehlt die Stadt (?)");
+                lines.Insert(2, string.Empty);
+            }
+
+            if (lines.Count != 4)
+                throw new InvalidDataException(
+                    $"Event-Text nicht gültig, da {lines.Count} statt 4 Zeilen:{Environment.NewLine}{eventText}");
 
             var regexResult = _datumZeitStringRegex.Match(lines[0]);
             var datumString = regexResult.Groups[1].Value.Trim();
@@ -110,5 +129,24 @@ namespace JuLiMl.Selenium
         {
             return Title;
         }
+    }
+
+    public class VeranstaltungMitVerband : Veranstaltung
+    {
+        public VeranstaltungMitVerband(Veranstaltung veranstaltung, Verbandsebene veranstalter)
+        {
+            Title = veranstaltung.Title;
+            ZeitStart = veranstaltung.ZeitStart;
+            ZeitEnde = veranstaltung.ZeitEnde;
+            Ort = veranstaltung.Ort;
+            Stadt = veranstaltung.Stadt;
+            Veranstalter = veranstalter;
+        }
+
+        public VeranstaltungMitVerband()
+        {
+        }
+
+        public Verbandsebene Veranstalter { get; set; }
     }
 }
