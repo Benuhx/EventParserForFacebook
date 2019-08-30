@@ -51,7 +51,7 @@ namespace JuLiMl.OutputServices
                     {
                         curRow.AddCell(curVeranstaltung.Title);
                         curRow.AddCell(FormatiereDatum(curVeranstaltung.ZeitStart));
-                        curRow.AddCell(FormatiereUhrzeit(curVeranstaltung.ZeitStart, curVeranstaltung.ZeitEnde));
+                        curRow.AddCell(FormatiereUhrzeit(curVeranstaltung.ZeitStart));
                         curRow.AddCell(curVeranstaltung.Stadt);
                         curRow.AddCell(curVeranstaltung.Ort);
                         curRow.AddCell(curVeranstaltung.Veranstalter.Name);
@@ -88,15 +88,14 @@ namespace JuLiMl.OutputServices
             return startTime.ToString("dd.MM.yyyy", deCulture);
         }
 
-        private string FormatiereUhrzeit(DateTime curVeranstaltungZeitStart, DateTime curVeranstaltungZeitEnde)
+        private string FormatiereUhrzeit(DateTime curVeranstaltungZeitStart)
         {
+            if (curVeranstaltungZeitStart.Hour == 0 & curVeranstaltungZeitStart.Minute == 0) return string.Empty;
+
             var deCulture = CultureInfo.GetCultureInfo("de-De");
             const string patternUhrzeit = "HH:mm";
 
-            var startZeit = curVeranstaltungZeitStart.ToString(patternUhrzeit, deCulture);
-            var endZeit = curVeranstaltungZeitEnde.ToString(patternUhrzeit, deCulture);
-
-            return $"{startZeit} bis {endZeit}";
+            return curVeranstaltungZeitStart.ToString(patternUhrzeit, deCulture);
         }
 
         private string FormatiereHtmlLink(string linkText, string linkUrl)

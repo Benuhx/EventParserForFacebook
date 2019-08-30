@@ -33,8 +33,9 @@ namespace JuLiMl.Selenium
             _logger.LogInformation($"Start am {DateTime.Now.ToShortDateString()} um {DateTime.Now.ToShortTimeString()} Uhr");
             var pagesZumParsen = new List<string>()
             {
-                "julisnrw",
                 "julisdortmund",
+                "julisnrw",
+                "jungeliberale",
                 "julisbochum",
                 "julisessen",
                 "Julis-Herne-517505588327635",

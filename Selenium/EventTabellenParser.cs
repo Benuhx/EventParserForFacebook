@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using JuLiMl.Parser;
 using Microsoft.Extensions.Logging;
 
 namespace JuLiMl.Selenium
@@ -17,12 +18,14 @@ namespace JuLiMl.Selenium
     public class EventTabellenParser : IEventTabellenParser
     {
         private readonly ILogger<EventTabellenParser> _logger;
+        private readonly IEventParser _eventParser;
         private readonly Regex _datumZeitStringRegex;
         private readonly Regex _titleRegex;
 
-        public EventTabellenParser(ILogger<EventTabellenParser> logger)
+        public EventTabellenParser(ILogger<EventTabellenParser> logger, IEventParser eventParser)
         {
             _logger = logger;
+            _eventParser = eventParser;
             _datumZeitStringRegex = new Regex("(.*) von (.*) bis (.*) UTC .*", RegexOptions.IgnorePatternWhitespace);
             _titleRegex = new Regex("Veranstaltungsdetails für (.*) anzeigen", RegexOptions.Singleline);
         }
@@ -84,6 +87,10 @@ namespace JuLiMl.Selenium
 
         private Veranstaltung ParseEineVeranstalltung(string eventText, string eventTitle)
         {
+            var erstellteVeranstaltung = _eventParser.ParseVeranstaltung(eventText);
+            erstellteVeranstaltung.Title = eventTitle;
+            return erstellteVeranstaltung;
+
             var veranstaltung = new Veranstaltung();
             var lines = eventText.Trim().Split(Environment.NewLine).ToList();
             if (lines.Count == 3)
@@ -111,7 +118,7 @@ namespace JuLiMl.Selenium
             var zeitEnde = DateTime.ParseExact(zeitEndeString, "HH:mm", deCulture);
 
             veranstaltung.ZeitStart = datum.AddHours(zeitStart.Hour).AddMinutes(zeitStart.Minute);
-            veranstaltung.ZeitEnde = datum.AddHours(zeitEnde.Hour).AddMinutes(zeitEnde.Minute);
+            //veranstaltung.ZeitEnde = datum.AddHours(zeitEnde.Hour).AddMinutes(zeitEnde.Minute);
 
             return veranstaltung;
         }
@@ -121,7 +128,6 @@ namespace JuLiMl.Selenium
     {
         public string Title { get; set; }
         public DateTime ZeitStart { get; set; }
-        public DateTime ZeitEnde { get; set; }
         public string Ort { get; set; }
         public string Stadt { get; set; }
 
@@ -137,7 +143,7 @@ namespace JuLiMl.Selenium
         {
             Title = veranstaltung.Title;
             ZeitStart = veranstaltung.ZeitStart;
-            ZeitEnde = veranstaltung.ZeitEnde;
+            //ZeitEnde = veranstaltung.ZeitEnde;
             Ort = veranstaltung.Ort;
             Stadt = veranstaltung.Stadt;
             Veranstalter = veranstalter;

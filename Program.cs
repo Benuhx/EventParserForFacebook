@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using JuLiMl.Parser;
 using JuLiMl.Selenium;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -29,7 +30,7 @@ namespace JuLiMl
             var services = new ServiceCollection();
 
             services.AddLogging(configure => configure.AddConsole())
-                .Configure<LoggerFilterOptions>(options => options.MinLevel = LogLevel.Debug);
+                .Configure<LoggerFilterOptions>(options => options.MinLevel = LogLevel.Warning);
 
             var container = new Container();
             container.Configure(config =>
@@ -40,6 +41,7 @@ namespace JuLiMl
                     _.WithDefaultConventions();
                 });
                 config.For<ISeleniumInstanceService>().Singleton().Use<SeleniumInstanceService>();
+                config.For<IRegExProvider>().Singleton().Use<RegExProvider>();
                 config.Populate(services);
             });
 
