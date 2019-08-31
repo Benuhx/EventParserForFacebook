@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "JuLiMl": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

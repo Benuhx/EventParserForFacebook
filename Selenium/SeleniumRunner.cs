@@ -19,8 +19,9 @@ namespace JuLiMl.Selenium
         private readonly IHtmlTabelleService _htmlTabelleService;
         private readonly ILogger<SeleniumRunner> _logger;
 
-        public SeleniumRunner(ISeleniumService seleniumService, ISeleniumInstanceService seleniumInstanceService, 
-            IEventTabellenParser eventTabellenParser, IHtmlTabelleService htmlTabelleService, ILogger<SeleniumRunner> logger)
+        public SeleniumRunner(ISeleniumService seleniumService, ISeleniumInstanceService seleniumInstanceService,
+            IEventTabellenParser eventTabellenParser, IHtmlTabelleService htmlTabelleService,
+            ILogger<SeleniumRunner> logger)
         {
             _seleniumService = seleniumService;
             _seleniumInstanceService = seleniumInstanceService;
@@ -31,21 +32,22 @@ namespace JuLiMl.Selenium
 
         public void Run()
         {
-            _logger.LogInformation($"Start am {DateTime.Now.ToShortDateString()} um {DateTime.Now.ToShortTimeString()} Uhr");
-            var pagesZumParsen = new List<string>()
+            _logger.LogInformation(
+                $"Start am {DateTime.Now.ToShortDateString()} um {DateTime.Now.ToShortTimeString()} Uhr");
+            var pagesZumParsen = new List<FacebookPage>()
             {
-                "julisdortmund",
-                "julisnrw",
-                "jungeliberale",
-                "julisbochum",
-                "julisessen",
-                "Julis-Herne-517505588327635",
-                "julismh",
-                "JuLis-Gelsenkirchen-314536558629253",
-                "julis.bottrop",
-                "oberhausen.julis",
-                "julis.kv.re",
-                "julisruhrgebiet"
+                new FacebookPage("JuLis Bundesverband", "jungeliberale"),
+                new FacebookPage("JuLis NRW", "julisnrw"),
+                new FacebookPage("JuLis Ruhrgebiet", "julisruhrgebiet"),
+                new FacebookPage("JuLis Dortmund", "julisdortmund"),
+                new FacebookPage("JuLis Bochum", "julisbochum"),
+                new FacebookPage("JuLis Essen", "julisessen"),
+                new FacebookPage("JuLis Herne", "Julis-Herne-517505588327635"),
+                new FacebookPage("JuLis Mülheim an der Ruhr", "julismh"),
+                new FacebookPage("JuLis Gelsenkirchen", "JuLis-Gelsenkirchen-314536558629253"),
+                new FacebookPage("JuLis Bottrop", "julis.bottrop"),
+                new FacebookPage("JuLis Oberhausen", "oberhausen.julis"),
+                new FacebookPage("JuLis Recklinghausen", "julis.kv.re")
             };
 
             ParserResults eventTabellen = null;
@@ -54,10 +56,10 @@ namespace JuLiMl.Selenium
             {
                 foreach (var curPage in pagesZumParsen)
                 {
-                    var curUrl = GetMobileUrlOfPage(curPage);
+                    var curUrl = GetMobileUrlOfPage(curPage.NameDerFacebookPage);
                     eventTabellen = _seleniumService.IdentifiziereEventTabelle(curUrl);
                     var eventsDieserUrl = _eventTabellenParser.ParseEventTabellen(eventTabellen);
-                    events.Add(new Verbandsebene(curPage, GetDesktopUrlOfPage(curPage), eventsDieserUrl));
+                    events.Add(new Verbandsebene(curPage.NameDesVerbandes, GetDesktopUrlOfPage(curPage.NameDerFacebookPage), eventsDieserUrl));
                 }
             }
             finally
