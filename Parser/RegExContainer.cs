@@ -3,15 +3,15 @@ using System.Text.RegularExpressions;
 
 namespace JuLiMl.Parser
 {
-    public interface IRegExProvider
+    public interface IRegExContainer
     {
         Regex GetRegex(string pattern);
     }
-    public class RegExProvider : IRegExProvider
+    public class RegExContainer : IRegExContainer
     {
         private readonly Dictionary<string, Regex> _regExListe;
 
-        public RegExProvider()
+        public RegExContainer()
         {
             _regExListe = new Dictionary<string, Regex>();
         }

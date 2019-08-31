@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using JuLiMl.DTO;
 using JuLiMl.Parser;
 using Microsoft.Extensions.Logging;
 
@@ -122,37 +123,5 @@ namespace JuLiMl.Selenium
 
             return veranstaltung;
         }
-    }
-
-    public class Veranstaltung
-    {
-        public string Title { get; set; }
-        public DateTime ZeitStart { get; set; }
-        public string Ort { get; set; }
-        public string Stadt { get; set; }
-
-        public override string ToString()
-        {
-            return Title;
-        }
-    }
-
-    public class VeranstaltungMitVerband : Veranstaltung
-    {
-        public VeranstaltungMitVerband(Veranstaltung veranstaltung, Verbandsebene veranstalter)
-        {
-            Title = veranstaltung.Title;
-            ZeitStart = veranstaltung.ZeitStart;
-            //ZeitEnde = veranstaltung.ZeitEnde;
-            Ort = veranstaltung.Ort;
-            Stadt = veranstaltung.Stadt;
-            Veranstalter = veranstalter;
-        }
-
-        public VeranstaltungMitVerband()
-        {
-        }
-
-        public Verbandsebene Veranstalter { get; set; }
     }
 }

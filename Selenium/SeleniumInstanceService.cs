@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using System.Text;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Remote;
@@ -19,11 +20,24 @@ namespace JuLiMl.Selenium
         {
             if (_firefoxDriver != null) return _firefoxDriver;
 
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             //https://stackoverflow.com/questions/46836472/selenium-with-net-core-performance-impact-multiple-threads-in-iwebelement
             var driverPath = $@"{AppDomain.CurrentDomain.BaseDirectory}";
             var service = FirefoxDriverService.CreateDefaultService(driverPath);
-            _firefoxDriver = new FirefoxDriver(service);
+            //service.Port = 2828;
+            //service.BrowserCommunicationPort = 2829;
+            
+            var options = new FirefoxOptions();
+            options.AddArguments("--headless");
+
+            var profile = new FirefoxProfile();
+            profile.SetPreference("intl.accept_languages", "de-de");
+            profile.WriteToDisk();
+            options.Profile = profile;
+            
+            _firefoxDriver = new FirefoxDriver(service, options);
             FixDriverCommandExecutionDelay(_firefoxDriver);
+            
 
             return _firefoxDriver;
         }

@@ -41,7 +41,7 @@ namespace JuLiMl
                     _.WithDefaultConventions();
                 });
                 config.For<ISeleniumInstanceService>().Singleton().Use<SeleniumInstanceService>();
-                config.For<IRegExProvider>().Singleton().Use<RegExProvider>();
+                config.For<IRegExContainer>().Singleton().Use<RegExContainer>();
                 config.Populate(services);
             });
 

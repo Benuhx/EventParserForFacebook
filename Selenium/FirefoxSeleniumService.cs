@@ -1,7 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using JuLiMl.DTO;
 using OpenQA.Selenium;
 
 namespace JuLiMl.Selenium
@@ -52,11 +52,5 @@ namespace JuLiMl.Selenium
             var resultConatiner = new ParserResults() {EventText = eventTexte, LinkTexte = linkTexte};
             return resultConatiner;
         }
-    }
-
-    public class ParserResults
-    {
-        public string EventText { get; set; }
-        public List<string> LinkTexte { get; set; }
     }
 }

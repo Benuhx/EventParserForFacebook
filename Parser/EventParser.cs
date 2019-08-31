@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text.RegularExpressions;
-using JuLiMl.Selenium;
+using JuLiMl.DTO;
 using Microsoft.Extensions.Logging;
 
 namespace JuLiMl.Parser
@@ -16,16 +15,16 @@ namespace JuLiMl.Parser
     public class EventParser : IEventParser
     {
         private readonly ILogger<EventParser> _logger;
-        private readonly IRegExProvider _regExProvider;
+        private readonly IRegExContainer _regExContainer;
         private readonly CultureInfo _deCulture;
         private string _eventText;
         private Veranstaltung _veranstaltung;
 
 
-        public EventParser(ILogger<EventParser> logger, IRegExProvider regExProvider)
+        public EventParser(ILogger<EventParser> logger, IRegExContainer regExContainer)
         {
             _logger = logger;
-            _regExProvider = regExProvider;
+            _regExContainer = regExContainer;
             _deCulture = CultureInfo.GetCultureInfo("de-de");
         }
 
@@ -35,10 +34,10 @@ namespace JuLiMl.Parser
             _logger.LogInformation($"Starte Parsen von ###{_eventText}###");
             _veranstaltung = new Veranstaltung();
 
-            ErsetzeMonatsAbkuerzungen();
+            ErsetzeMonatsAbkuerzungenImEventText();
 
-            var datum = ParseDatum();
-            var zeitStart = ParseZeitStart();
+            var datum = ParseDatumAusEventText();
+            var zeitStart = ParseZeitStartAusEventText();
 
             _veranstaltung.Title = null;
             _veranstaltung.ZeitStart = datum.AddHours(zeitStart.Hour).AddMinutes(zeitStart.Minute);
@@ -49,7 +48,7 @@ namespace JuLiMl.Parser
             return _veranstaltung;
         }
 
-        private void ErsetzeMonatsAbkuerzungen()
+        private void ErsetzeMonatsAbkuerzungenImEventText()
         {
             _eventText = _eventText
                 .Replace(" Jan. ", " Januar ")
@@ -69,24 +68,24 @@ namespace JuLiMl.Parser
                 .Replace(" Dez. ", " Dezember ");
         }
 
-        private DateTime ParseDatum()
+        private DateTime ParseDatumAusEventText()
         {
             var regExe = new List<RegExDateTimeFormat>()
             {
                 // 01. September 2019
-                new RegExDateTimeFormat(_regExProvider.GetRegex(@"(\d{2}. \w{4,9} \d{4})"), "dd. MMMM yyyy"),
+                new RegExDateTimeFormat(_regExContainer.GetRegex(@"(\d{2}. \w{4,9} \d{4})"), "dd. MMMM yyyy"),
                 // 1. September 2019
-                new RegExDateTimeFormat(_regExProvider.GetRegex(@"(\d{1}. \w{4,9} \d{4})"), "d. MMMM yyyy"),
+                new RegExDateTimeFormat(_regExContainer.GetRegex(@"(\d{1}. \w{4,9} \d{4})"), "d. MMMM yyyy"),
                 // 01.09.2019
-                new RegExDateTimeFormat(_regExProvider.GetRegex(@"(\d{2}. \w{4,9} \d{4})"), "dd.MM.yyyy"),
+                new RegExDateTimeFormat(_regExContainer.GetRegex(@"(\d{2}. \w{4,9} \d{4})"), "dd.MM.yyyy"),
 
-                //Jetzt komme die genailen Formate ohne Jahr :/
+                //Jetzt komme die genialen Formate ohne Jahr :/
                 // 01. September
-                new RegExDateTimeFormat(_regExProvider.GetRegex(@"(\d{2}. \w{4,9})"), "dd. MMMM", false),
+                new RegExDateTimeFormat(_regExContainer.GetRegex(@"(\d{2}. \w{4,9})"), "dd. MMMM", false),
                 // 1. September
-                new RegExDateTimeFormat(_regExProvider.GetRegex(@"(\d{1}. \w{4,9})"), "d. MMMM yyyy", false),
+                new RegExDateTimeFormat(_regExContainer.GetRegex(@"(\d{1}. \w{4,9})"), "d. MMMM yyyy", false),
                 // 01.09
-                new RegExDateTimeFormat(_regExProvider.GetRegex(@"(\d{2}. \w{4,9})"), "dd.MM", false),
+                new RegExDateTimeFormat(_regExContainer.GetRegex(@"(\d{2}. \w{4,9})"), "dd.MM", false),
             };
 
             var firstMatch = regExe.FirstOrDefault(x => x.RegEx.IsMatch(_eventText));
@@ -117,11 +116,11 @@ namespace JuLiMl.Parser
             return outDate;
         }
 
-        private DateTime ParseZeitStart()
+        private DateTime ParseZeitStartAusEventText()
         {
             //09:00 bis 12:30
             //9:00 bis 12:30
-            var startZeitMatch = _regExProvider.GetRegex(@"\b(\d{1,2}:\d{2})\b\D*").Match(_eventText);
+            var startZeitMatch = _regExContainer.GetRegex(@"\b(\d{1,2}:\d{2})\b\D*").Match(_eventText);
             if (startZeitMatch.Success)
             {
                 var dateStartStr = startZeitMatch.Groups[1].Value;
@@ -159,19 +158,5 @@ namespace JuLiMl.Parser
             if (lines.Length < 4) return string.Empty;
             return lines[2].Trim();
         }
-    }
-
-    public class RegExDateTimeFormat
-    {
-        public RegExDateTimeFormat(Regex regEx, string dateTimeFormat, bool infoUeberJahrVorhanden = true)
-        {
-            RegEx = regEx;
-            DateTimeFormat = dateTimeFormat;
-            InfoUeberJahrVorhanden = infoUeberJahrVorhanden;
-        }
-
-        public Regex RegEx { get; set; }
-        public string DateTimeFormat { get; set; }
-        public bool InfoUeberJahrVorhanden { get; set; }
     }
 }

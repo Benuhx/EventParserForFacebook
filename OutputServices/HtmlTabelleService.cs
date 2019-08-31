@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using JuLiMl.DTO;
 using JuLiMl.Selenium;
 
 namespace JuLiMl.OutputServices
@@ -65,7 +66,7 @@ namespace JuLiMl.OutputServices
             stringBuilderHtmlTabelle.Append("</body>\r\n</html>");
 
             var html = stringBuilderHtmlTabelle.ToString();
-            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "JuLi-Events.html");
+            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "JuLi-Events.html");
             if(File.Exists(path)) File.Delete(path);
             File.WriteAllText(path, html, Encoding.UTF8);
         }

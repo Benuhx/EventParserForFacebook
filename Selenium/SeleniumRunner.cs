@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using JuLiMl.DTO;
 using JuLiMl.OutputServices;
 using Microsoft.Extensions.Logging;
 
@@ -76,25 +77,6 @@ namespace JuLiMl.Selenium
         private string GetDesktopUrlOfPage(string pageName)
         {
             return $"https://facebook.com/pg/{pageName}/events/";
-        }
-    }
-
-    public class Verbandsebene
-    {
-        public Verbandsebene(string name, string facebookDesktopUrl, List<Veranstaltung> veranstaltungen)
-        {
-            Name = name;
-            FacebookDesktopUrl = facebookDesktopUrl;
-            Veranstaltungen = veranstaltungen;
-        }
-
-        public string Name { get; set; }
-        public string FacebookDesktopUrl { get; set; }
-        public List<Veranstaltung> Veranstaltungen { get; set; }
-
-        public override string ToString()
-        {
-            return Name;
         }
     }
 }
