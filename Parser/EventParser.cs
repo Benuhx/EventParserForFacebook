@@ -135,13 +135,13 @@ namespace JuLiMl.Parser
                     return startDate;
                 }
 
-                _logger.LogError(
+                _logger.LogWarning(
                     $"Zeit Start konnte nicht geparsed werden aus ###{_eventText}###. RegExResult: {dateStartStr}");
                 startDate = DateTime.MinValue;
                 return startDate;
             }
 
-            _logger.LogError($"Zeit Start konnte durch RegEx nicht gefunden werden: ###{_eventText}###");
+            _logger.LogWarning($"Zeit Start konnte durch RegEx nicht gefunden werden: ###{_eventText}###");
             return DateTime.MinValue;
         }
 

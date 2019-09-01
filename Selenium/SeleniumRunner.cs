@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 using JuLiMl.DTO;
 using JuLiMl.OutputServices;
 using Microsoft.Extensions.Logging;
@@ -32,9 +34,9 @@ namespace JuLiMl.Selenium
 
         public void Run()
         {
-            _logger.LogInformation(
-                $"Start am {DateTime.Now.ToShortDateString()} um {DateTime.Now.ToShortTimeString()} Uhr");
-            var pagesZumParsen = new List<FacebookPage>()
+            _logger.LogInformation($"Start am {DateTime.Now.ToShortDateString()} um {DateTime.Now.ToShortTimeString()} Uhr");
+            
+            var pagesZumParsen = new List<FacebookPage>
             {
                 new FacebookPage("JuLis Bundesverband", "jungeliberale"),
                 new FacebookPage("JuLis NRW", "julisnrw"),
@@ -49,15 +51,14 @@ namespace JuLiMl.Selenium
                 new FacebookPage("JuLis Oberhausen", "oberhausen.julis"),
                 new FacebookPage("JuLis Recklinghausen", "julis.kv.re")
             };
-
-            ParserResults eventTabellen = null;
+            
             var events = new List<Verbandsebene>();
             try
             {
                 foreach (var curPage in pagesZumParsen)
                 {
                     var curUrl = GetMobileUrlOfPage(curPage.NameDerFacebookPage);
-                    eventTabellen = _seleniumService.IdentifiziereEventTabelle(curUrl);
+                    var eventTabellen = _seleniumService.IdentifiziereEventTabelle(curUrl);
                     var eventsDieserUrl = _eventTabellenParser.ParseEventTabellen(eventTabellen);
                     events.Add(new Verbandsebene(curPage.NameDesVerbandes, GetDesktopUrlOfPage(curPage.NameDerFacebookPage), eventsDieserUrl));
                 }
@@ -67,12 +68,15 @@ namespace JuLiMl.Selenium
                 _seleniumInstanceService.Dispose();
             }
 
-            _htmlTabelleService.BaueHtmlTabelle(events);
+            var htmlTabelle = _htmlTabelleService.BaueHtmlTabelle(events);
+            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "JuLi-Events.html");
+            _logger.LogInformation($"Speichere HTML-Tabelle nach {path}");
+            if(File.Exists(path)) File.Delete(path);
+            File.WriteAllText(path, htmlTabelle, Encoding.UTF8);
         }
 
         private string GetMobileUrlOfPage(string pageName)
         {
-            //return $"https://mobile.facebook.com/{pageName}?v=events&is_past=1";
             return $"https://mobile.facebook.com/pg/{pageName}/events/";
         }
 

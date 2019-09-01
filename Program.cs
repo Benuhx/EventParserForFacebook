@@ -12,7 +12,7 @@ namespace JuLiMl
     {
         public static void Main(string[] args)
         {
-            using (var container = InitializeDependencyInjection())
+            using (var container = KonfiguriereDependencyInjectionUndErstelleContainer())
             {
                 var mainRunner = container.GetInstance<ISeleniumRunner>();
                 mainRunner.Run();
@@ -25,20 +25,21 @@ namespace JuLiMl
             }
         }
 
-        private static Container InitializeDependencyInjection()
+        private static Container KonfiguriereDependencyInjectionUndErstelleContainer()
         {
             var services = new ServiceCollection();
 
-            services.AddLogging(configure => configure.AddConsole())
-                .Configure<LoggerFilterOptions>(options => options.MinLevel = LogLevel.Warning);
+            services.AddLogging(configure => configure
+                    .AddConsole())
+                    .Configure<LoggerFilterOptions>(options => options.MinLevel = LogLevel.Warning);
 
             var container = new Container();
             container.Configure(config =>
             {
-                config.Scan(_ =>
+                config.Scan(x =>
                 {
-                    _.AssemblyContainingType(typeof(Program));
-                    _.WithDefaultConventions();
+                    x.AssemblyContainingType(typeof(Program));
+                    x.WithDefaultConventions();
                 });
                 config.For<ISeleniumInstanceService>().Singleton().Use<SeleniumInstanceService>();
                 config.For<IRegExContainer>().Singleton().Use<RegExContainer>();

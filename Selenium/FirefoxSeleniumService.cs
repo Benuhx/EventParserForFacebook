@@ -23,8 +23,7 @@ namespace JuLiMl.Selenium
         public ParserResults IdentifiziereEventTabelle(string facebookEventUrl)
         {
             var driver = _seleniumInstance.GetFirefoxDriver();
-
-            //driver.Manage().Window.Size = new Size(1920, 1080);
+            
             driver.Navigate().GoToUrl(facebookEventUrl);
 
             while (driver.FindElementByXPath("//*[contains(text(), 'Bevorstehende Veranstaltungen')]") == null)
@@ -32,8 +31,8 @@ namespace JuLiMl.Selenium
                 Thread.Sleep(TimeSpan.FromMilliseconds(100));
             }
 
-            driver.ExecuteScript(
-                "if(document.getElementById('u_0_o')) document.getElementById('u_0_o').style.display = 'none';");
+            //Anmelden- / Cookie-Banner ausblenden
+            driver.ExecuteScript("if(document.getElementById('u_0_o')) document.getElementById('u_0_o').style.display = 'none';");
 
             var tablesOhneInnereTabellen = driver
                 .FindElementsByTagName("table")

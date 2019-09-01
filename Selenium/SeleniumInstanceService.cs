@@ -20,12 +20,12 @@ namespace JuLiMl.Selenium
         {
             if (_firefoxDriver != null) return _firefoxDriver;
 
+            //profile.SetPreference() braucht zusätzliche Encodings, sonst gibt es eine Exception
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            
             //https://stackoverflow.com/questions/46836472/selenium-with-net-core-performance-impact-multiple-threads-in-iwebelement
             var driverPath = $@"{AppDomain.CurrentDomain.BaseDirectory}";
             var service = FirefoxDriverService.CreateDefaultService(driverPath);
-            //service.Port = 2828;
-            //service.BrowserCommunicationPort = 2829;
             
             var options = new FirefoxOptions();
             options.AddArguments("--headless");
@@ -37,7 +37,6 @@ namespace JuLiMl.Selenium
             
             _firefoxDriver = new FirefoxDriver(service, options);
             FixDriverCommandExecutionDelay(_firefoxDriver);
-            
 
             return _firefoxDriver;
         }

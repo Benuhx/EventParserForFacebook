@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using JuLiMl.DTO;
-using JuLiMl.Selenium;
 
 namespace JuLiMl.OutputServices
 {
@@ -19,11 +18,11 @@ namespace JuLiMl.OutputServices
         public string BaueHtmlTabelle(List<Verbandsebene> verbaendeMitEvents)
         {
             var sortierteVeranstaltungen = GetVeranstaltungMitVerband(verbaendeMitEvents);
-            GeneriereHtmlTabelle(sortierteVeranstaltungen);
-            return null;
+            var html = GeneriereHtmlTabelle(sortierteVeranstaltungen);
+            return html;
         }
 
-        private void GeneriereHtmlTabelle(IEnumerable<VeranstaltungMitVerband> sortierteVeranstaltungen)
+        private string GeneriereHtmlTabelle(IEnumerable<VeranstaltungMitVerband> sortierteVeranstaltungen)
         {
             var stringBuilderHtmlTabelle = new StringBuilder();
             stringBuilderHtmlTabelle.Append("<!DOCTYPE html>\r\n<html>\r\n<body>");
@@ -50,13 +49,13 @@ namespace JuLiMl.OutputServices
                 {
                     using (var curRow = tableBuilder.AddRow())
                     {
-                        curRow.AddCell(curVeranstaltung.Title);
-                        curRow.AddCell(FormatiereDatum(curVeranstaltung.ZeitStart));
-                        curRow.AddCell(FormatiereUhrzeit(curVeranstaltung.ZeitStart));
-                        curRow.AddCell(curVeranstaltung.Stadt);
-                        curRow.AddCell(curVeranstaltung.Ort);
-                        curRow.AddCell(curVeranstaltung.Veranstalter.Name);
-                        curRow.AddCell(FormatiereHtmlLink("Facebook-Seite", curVeranstaltung.Veranstalter.FacebookDesktopUrl));
+                        curRow.AddCell(ErsetzeLeerstring(curVeranstaltung.Title));
+                        curRow.AddCell(ErsetzeLeerstring(FormatiereDatum(curVeranstaltung.ZeitStart)));
+                        curRow.AddCell(ErsetzeLeerstring(FormatiereUhrzeit(curVeranstaltung.ZeitStart)));
+                        curRow.AddCell(ErsetzeLeerstring(curVeranstaltung.Stadt));
+                        curRow.AddCell(ErsetzeLeerstring(curVeranstaltung.Ort));
+                        curRow.AddCell(ErsetzeLeerstring(curVeranstaltung.Veranstalter.Name));
+                        curRow.AddCell(ErsetzeLeerstring(FormatiereHtmlLink("Facebook-Seite", curVeranstaltung.Veranstalter.FacebookDesktopUrl)));
                     }
                 }
 
@@ -66,9 +65,8 @@ namespace JuLiMl.OutputServices
             stringBuilderHtmlTabelle.Append("</body>\r\n</html>");
 
             var html = stringBuilderHtmlTabelle.ToString();
-            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "JuLi-Events.html");
-            if(File.Exists(path)) File.Delete(path);
-            File.WriteAllText(path, html, Encoding.UTF8);
+
+            return html;
         }
 
         private IEnumerable<VeranstaltungMitVerband> GetVeranstaltungMitVerband(
@@ -102,6 +100,11 @@ namespace JuLiMl.OutputServices
         private string FormatiereHtmlLink(string linkText, string linkUrl)
         {
             return $"<a href=\"{linkUrl}\" target=\"_blank\">{linkText}</a>";
+        }
+
+        private string ErsetzeLeerstring(string txt)
+        {
+            return string.IsNullOrWhiteSpace(txt) ? "Keine Information" : txt;
         }
     }
 }
