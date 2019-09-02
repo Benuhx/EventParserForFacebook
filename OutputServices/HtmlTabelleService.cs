@@ -25,7 +25,7 @@ namespace JuLiMl.OutputServices
         private string GeneriereHtmlTabelle(IEnumerable<VeranstaltungMitVerband> sortierteVeranstaltungen)
         {
             var stringBuilderHtmlTabelle = new StringBuilder();
-            stringBuilderHtmlTabelle.Append("<!DOCTYPE html>\r\n<html>\r\n<body>");
+            stringBuilderHtmlTabelle.Append("<!DOCTYPE html>\r\n<html>\r\n");
             stringBuilderHtmlTabelle.Append("<head>\r\n<style>\r\n#JuLiEventsGen {\r\n  font-family: \"Merriweather\", Arial, Helvetica, sans-serif;\r\n  border-collapse: collapse;\r\n  width: 100%;\r\n}\r\n\r\n#JuLiEventsGen thead {\r\n  font-family: \"Montserrat\", Arial, Helvetica, sans-serif;\r\n  font-weight: bold;\r\n  background-color: rgb(255, 237, 0);\r\n  color: rgb(229, 0, 125);\r\n}\r\n\r\n#JuLiEventsGen td, #JuLiEventsGen th {\r\n  border: 1px solid rgb(255, 237, 0);\r\n  padding: 8px;\r\n}\r\n\r\n#JuLiEventsGen tr:nth-child(even){background-color: #f2f2f2;}\r\n\r\n#JuLiEventsGen th {\r\n  padding-top: 12px;\r\n  padding-bottom: 12px;\r\n  text-align: left;\r\n  background-color: #4CAF50;\r\n  color: white;\r\n}\r\n</style>\r\n</head>");
             stringBuilderHtmlTabelle.Append("<body>\r\n");
 
