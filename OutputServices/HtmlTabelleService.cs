@@ -10,19 +10,20 @@ namespace JuLiMl.OutputServices
 {
     public interface IHtmlTabelleService
     {
-        string BaueHtmlTabelle(List<Verbandsebene> verbaendeMitEvents);
+        string BaueHtmlTabelle(List<Verbandsebene> verbaendeMitEvents, List<FacebookPage> geparstePages);
     }
 
     public class HtmlTabelleService : IHtmlTabelleService
     {
-        public string BaueHtmlTabelle(List<Verbandsebene> verbaendeMitEvents)
+        public string BaueHtmlTabelle(List<Verbandsebene> verbaendeMitEvents, List<FacebookPage> geparstePages)
         {
             var sortierteVeranstaltungen = GetVeranstaltungMitVerband(verbaendeMitEvents);
-            var html = GeneriereHtmlTabelle(sortierteVeranstaltungen);
+            var html = GeneriereHtmlTabelle(sortierteVeranstaltungen, geparstePages);
             return html;
         }
 
-        private string GeneriereHtmlTabelle(IEnumerable<VeranstaltungMitVerband> sortierteVeranstaltungen)
+        private string GeneriereHtmlTabelle(IEnumerable<VeranstaltungMitVerband> sortierteVeranstaltungen,
+            List<FacebookPage> geparstePages)
         {
             var stringBuilderHtmlTabelle = new StringBuilder();
             stringBuilderHtmlTabelle.Append("<!DOCTYPE html>\r\n<html>\r\n");
@@ -61,6 +62,9 @@ namespace JuLiMl.OutputServices
 
                 tableBuilder.EndTableBody();
             }
+
+            var erklaerungsText = BaueErklaerungsText(geparstePages);
+            stringBuilderHtmlTabelle.Append($"<p>{erklaerungsText}</p>");
             
             stringBuilderHtmlTabelle.Append("</body>\r\n</html>");
 
@@ -79,6 +83,12 @@ namespace JuLiMl.OutputServices
                 .OrderBy(x => x.ZeitStart)
                 .ToList();
             return veranstaltungMitVerband;
+        }
+
+        private string BaueErklaerungsText(IList<FacebookPage> geparstePages)
+        {
+            var verbaende = geparstePages.Select(x => x.NameDesVerbandes).Take(geparstePages.Count - 1);
+            return $"Diese Tabelle fasst die Termine von {string.Join(", ", verbaende)} und {geparstePages.Last().NameDesVerbandes} zusammen";
         }
 
         private string FormatiereDatum(DateTime startTime)

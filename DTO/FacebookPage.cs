@@ -1,6 +1,6 @@
 ﻿namespace JuLiMl.DTO
 {
-    internal class FacebookPage
+    public class FacebookPage
     {
         public FacebookPage(string nameDesVerbandes, string nameDerFacebookPage)
         {

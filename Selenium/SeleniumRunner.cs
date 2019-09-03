@@ -68,7 +68,7 @@ namespace JuLiMl.Selenium
                 _seleniumInstanceService.Dispose();
             }
 
-            var htmlTabelle = _htmlTabelleService.BaueHtmlTabelle(events);
+            var htmlTabelle = _htmlTabelleService.BaueHtmlTabelle(events, pagesZumParsen);
             var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "JuLi-Events.html");
             _logger.LogInformation($"Speichere HTML-Tabelle nach {path}");
             if(File.Exists(path)) File.Delete(path);
