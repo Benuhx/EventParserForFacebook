@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace JuLiMl.DTO
+namespace FacebookEventParser.DTO
 {
     internal class Config
     {

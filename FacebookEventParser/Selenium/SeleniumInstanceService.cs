@@ -5,7 +5,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Remote;
 
-namespace JuLiMl.Selenium
+namespace FacebookEventParser.Selenium
 {
     public interface ISeleniumInstanceService : IDisposable
     {

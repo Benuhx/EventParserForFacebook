@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace JuLiMl.DTO
+namespace FacebookEventParser.DTO
 {
     public class RegExDateTimeFormat
     {

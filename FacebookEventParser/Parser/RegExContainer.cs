@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace JuLiMl.Parser
+namespace FacebookEventParser.Parser
 {
     public interface IRegExContainer
     {

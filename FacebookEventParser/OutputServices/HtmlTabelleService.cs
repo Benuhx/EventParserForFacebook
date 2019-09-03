@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Text;
-using JuLiMl.DTO;
+using FacebookEventParser.DTO;
 
-namespace JuLiMl.OutputServices
+namespace FacebookEventParser.OutputServices
 {
     public interface IHtmlTabelleService
     {

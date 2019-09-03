@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
-using JuLiMl.Parser;
-using JuLiMl.Selenium;
+using FacebookEventParser.Parser;
+using FacebookEventParser.Selenium;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using StructureMap;
 
-namespace JuLiMl
+namespace FacebookEventParser
 {
     public class Program
     {

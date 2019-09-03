@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace JuLiMl.DTO
+namespace FacebookEventParser.DTO
 {
     public class ParserResults
     {

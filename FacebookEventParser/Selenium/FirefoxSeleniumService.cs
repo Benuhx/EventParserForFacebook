@@ -1,10 +1,10 @@
 using System;
 using System.Linq;
 using System.Threading;
-using JuLiMl.DTO;
+using FacebookEventParser.DTO;
 using OpenQA.Selenium;
 
-namespace JuLiMl.Selenium
+namespace FacebookEventParser.Selenium
 {
     public interface ISeleniumService
     {

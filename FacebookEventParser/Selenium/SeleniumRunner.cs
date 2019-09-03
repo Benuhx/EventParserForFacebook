@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using JuLiMl.DTO;
-using JuLiMl.OutputServices;
+using FacebookEventParser.DTO;
+using FacebookEventParser.OutputServices;
 using Microsoft.Extensions.Logging;
 
-namespace JuLiMl.Selenium
+namespace FacebookEventParser.Selenium
 {
     public interface ISeleniumRunner
     {

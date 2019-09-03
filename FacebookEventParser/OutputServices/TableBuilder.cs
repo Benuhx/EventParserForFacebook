@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace JuLiMl.OutputServices
+namespace FacebookEventParser.OutputServices
 {
     public interface ITableBuilder : IDisposable
     {

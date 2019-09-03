@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using JuLiMl.DTO;
+using FacebookEventParser.DTO;
 using Microsoft.Extensions.Logging;
 
-namespace JuLiMl.Parser
+namespace FacebookEventParser.Parser
 {
     public interface IEventParser
     {

@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
-using JuLiMl.DTO;
-using JuLiMl.Parser;
+using FacebookEventParser.DTO;
+using FacebookEventParser.Parser;
 using Microsoft.Extensions.Logging;
 
-namespace JuLiMl.Selenium
+namespace FacebookEventParser.Selenium
 {
     public interface IEventTabellenParser
     {
