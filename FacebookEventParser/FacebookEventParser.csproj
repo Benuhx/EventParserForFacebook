@@ -6,6 +6,7 @@
     <StartupObject>JuLiMl.Program</StartupObject>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>.</DockerfileContext>
+    <AssemblyName>FacebookEventParser</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
