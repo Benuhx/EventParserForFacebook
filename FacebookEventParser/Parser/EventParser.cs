@@ -73,19 +73,19 @@ namespace FacebookEventParser.Parser
             var regExe = new List<RegExDateTimeFormat>()
             {
                 // 01. September 2019
-                new RegExDateTimeFormat(_regExContainer.GetRegex(@"(\d{2}. \w{4,9} \d{4})"), "dd. MMMM yyyy"),
+                new RegExDateTimeFormat(_regExContainer.GetRegex(@"(\d{2}. \w{3,9} \d{4})"), "dd. MMMM yyyy"),
                 // 1. September 2019
-                new RegExDateTimeFormat(_regExContainer.GetRegex(@"(\d{1}. \w{4,9} \d{4})"), "d. MMMM yyyy"),
+                new RegExDateTimeFormat(_regExContainer.GetRegex(@"(\d{1}. \w{3,9} \d{4})"), "d. MMMM yyyy"),
                 // 01.09.2019
-                new RegExDateTimeFormat(_regExContainer.GetRegex(@"(\d{2}. \w{4,9} \d{4})"), "dd.MM.yyyy"),
+                new RegExDateTimeFormat(_regExContainer.GetRegex(@"(\d{2}. \w{3,9} \d{4})"), "dd.MM.yyyy"),
 
                 //Jetzt komme die genialen Formate ohne Jahr :/
                 // 01. September
-                new RegExDateTimeFormat(_regExContainer.GetRegex(@"(\d{2}. \w{4,9})"), "dd. MMMM", false),
+                new RegExDateTimeFormat(_regExContainer.GetRegex(@"(\d{2}. \w{3,9})"), "dd. MMMM", false),
                 // 1. September
-                new RegExDateTimeFormat(_regExContainer.GetRegex(@"(\d{1}. \w{4,9})"), "d. MMMM yyyy", false),
+                new RegExDateTimeFormat(_regExContainer.GetRegex(@"(\d{1}. \w{3,9})"), "d. MMMM yyyy", false),
                 // 01.09
-                new RegExDateTimeFormat(_regExContainer.GetRegex(@"(\d{2}. \w{4,9})"), "dd.MM", false),
+                new RegExDateTimeFormat(_regExContainer.GetRegex(@"(\d{2}. \w{3,9})"), "dd.MM", false),
             };
 
             var firstMatch = regExe.FirstOrDefault(x => x.RegEx.IsMatch(_eventText));

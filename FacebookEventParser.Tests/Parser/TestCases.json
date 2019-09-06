@@ -1,0 +1,22 @@
+﻿[
+  {
+    "EventTextArray": [
+      "Samstag, 26. Oktober 2019 von 10:00 bis 15:30 UTC+02",
+      "Stadthalle Borken (Am Vennehof 1, 46325 Borken)",
+      "Veranstaltungsdetails anzeigen"
+    ],
+    "ZeitStart": "26.10.2019 - 10:00",
+    "Ort": "Stadthalle Borken (Am Vennehof 1, 46325 Borken)",
+    "Stadt": ""
+  },
+  {
+    "EventTextArray": [
+        "Samstag, 11. Mai 2019 von 16:00 bis 16:45 UTC+02",
+        "City Forum, Hochstraße 39-41, 53879 Euskirchen",
+        "Veranstaltungsdetails anzeigen"
+      ],
+    "ZeitStart": "11.05.2019 - 16:00",
+    "Ort": "City Forum, Hochstraße 39-41, 53879 Euskirchen",
+    "Stadt": ""
+  }
+]
