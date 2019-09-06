@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <UseAppHost>true</UseAppHost>
   </PropertyGroup>
 
   <ItemGroup>
