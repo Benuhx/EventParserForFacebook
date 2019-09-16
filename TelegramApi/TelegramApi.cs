@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Args;
@@ -10,14 +9,16 @@ namespace TelegramApi {
     }
 
     public class TelegramApi : ITelegramApi {
+        private readonly ITelegramPersistenceService _telegramPersistenceService;
         private readonly TelegramBotClient _botClient;
         private readonly List<long> _chatIds;
 
-        public TelegramApi() {
+        public TelegramApi(ITelegramPersistenceService telegramPersistenceService) {
+            _telegramPersistenceService = telegramPersistenceService;
             _botClient = new TelegramBotClient("***REMOVED***");
             _botClient.OnMessage += BotClientOnOnMessage;
             _botClient.StartReceiving();
-            _chatIds = new List<long>(2);
+            _chatIds = _telegramPersistenceService.LadeChatIds();
         }
 
         private async void BotClientOnOnMessage(object sender, MessageEventArgs e) {
@@ -28,6 +29,7 @@ namespace TelegramApi {
             }
 
             _chatIds.Add(chatId);
+            _telegramPersistenceService.SpeichereChatIds(_chatIds);
             await _botClient.SendTextMessageAsync(chatId, "Du wurdest zur Broadcast-Liste hinzugefügt");
         }
 
