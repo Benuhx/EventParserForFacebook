@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using FacebookEventParser.DTO;
 using FacebookEventParser.OutputServices;
 using Microsoft.Extensions.Logging;
+using TelegramApi;
 using WordpressPublisher;
 
 namespace FacebookEventParser.Selenium {
@@ -20,14 +21,16 @@ namespace FacebookEventParser.Selenium {
         private readonly IHtmlService _htmlService;
         private readonly ILogger<SeleniumRunner> _logger;
         private readonly IWordPressApi _wordPressApi;
+        private readonly ITelegramApi _telegramApi;
 
-        public SeleniumRunner(ISeleniumService seleniumService, ISeleniumInstanceService seleniumInstanceService, IEventTabellenParser eventTabellenParser, IHtmlService htmlService, ILogger<SeleniumRunner> logger, IWordPressApi wordPressApi) {
+        public SeleniumRunner(ISeleniumService seleniumService, ISeleniumInstanceService seleniumInstanceService, IEventTabellenParser eventTabellenParser, IHtmlService htmlService, ILogger<SeleniumRunner> logger, IWordPressApi wordPressApi, ITelegramApi telegramApi) {
             _seleniumService = seleniumService;
             _seleniumInstanceService = seleniumInstanceService;
             _eventTabellenParser = eventTabellenParser;
             _htmlService = htmlService;
             _logger = logger;
             _wordPressApi = wordPressApi;
+            _telegramApi = telegramApi;
         }
 
         public async Task Run() {
@@ -61,15 +64,13 @@ namespace FacebookEventParser.Selenium {
                 _seleniumInstanceService.Dispose();
             }
 
-            var htmlTabelle = _htmlService.BaueHtml(events, pagesZumParsen);
-            var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "JuLi-Events.html");
-            _logger.LogInformation($"Speichere HTML-Tabelle nach {path}");
+            await _telegramApi.SendeNachricht($"Ich habe {events.Count} Events gefunden");
 
+            var htmlTabelle = _htmlService.BaueHtml(events, pagesZumParsen);
             var cred = new WordPressCredentials("***REMOVED***", "***REMOVED***", "***REMOVED***");
             await _wordPressApi.UpdatePage(468, htmlTabelle, cred);
 
-            if (File.Exists(path)) File.Delete(path);
-            File.WriteAllText(path, htmlTabelle, Encoding.UTF8);
+            await _telegramApi.SendeNachricht($"Und die Homepage ist auch fertig :)");
         }
 
         private string GetMobileUrlOfPage(string pageName) {

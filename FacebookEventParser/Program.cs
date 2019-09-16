@@ -7,6 +7,7 @@ using FacebookEventParser.Selenium;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using StructureMap;
+using TelegramApi;
 using WordpressPublisher;
 
 namespace FacebookEventParser
@@ -43,10 +44,13 @@ namespace FacebookEventParser
                 {
                     x.AssemblyContainingType<Program>();
                     x.AssemblyContainingType<WordPressApi>();
+                    x.AssemblyContainingType<ITelegramApi>();
                     x.WithDefaultConventions();
                 });
                 config.For<ISeleniumInstanceService>().Singleton().Use<SeleniumInstanceService>();
                 config.For<IRegExContainer>().Singleton().Use<RegExContainer>();
+                config.For<ITelegramApi>().Singleton().Use<TelegramApi.TelegramApi>();
+                
                 config.For<IHtmlService>().Use<HtmlService>();
                 config.Populate(services);
             });

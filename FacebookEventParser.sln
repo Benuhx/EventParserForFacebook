@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FacebookEventParser", "Face
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FacebookEventParser.Tests", "FacebookEventParser.Tests\FacebookEventParser.Tests.csproj", "{9A4AE892-FD7F-412D-BEE9-CF4321F31466}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordpressPublisher", "WordpressPublisher\WordpressPublisher.csproj", "{53CAE75F-8782-4867-9A89-AA38193835D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordpressPublisher", "WordpressPublisher\WordpressPublisher.csproj", "{53CAE75F-8782-4867-9A89-AA38193835D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelegramApi", "TelegramApi\TelegramApi.csproj", "{58AF0C6A-0E9F-44A9-A363-A55C48C6D869}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,6 +28,10 @@ Global
 		{53CAE75F-8782-4867-9A89-AA38193835D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53CAE75F-8782-4867-9A89-AA38193835D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53CAE75F-8782-4867-9A89-AA38193835D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58AF0C6A-0E9F-44A9-A363-A55C48C6D869}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58AF0C6A-0E9F-44A9-A363-A55C48C6D869}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58AF0C6A-0E9F-44A9-A363-A55C48C6D869}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58AF0C6A-0E9F-44A9-A363-A55C48C6D869}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

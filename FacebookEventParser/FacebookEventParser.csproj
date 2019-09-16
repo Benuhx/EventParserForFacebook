@@ -18,13 +18,13 @@
     <PackageReference Include="Selenium.Firefox.WebDriver" Version="0.24.0" />
     <PackageReference Include="Selenium.Support" Version="3.141.0" />
     <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
-    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-beta0006" />
     <PackageReference Include="StructureMap.Microsoft.DependencyInjection" Version="2.0.0" />
     <PackageReference Include="System.Security.Permissions" Version="4.5.0" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="4.5.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TelegramApi\TelegramApi.csproj" />
     <ProjectReference Include="..\WordpressPublisher\WordpressPublisher.csproj" />
   </ItemGroup>
 
