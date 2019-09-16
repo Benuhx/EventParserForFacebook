@@ -22,7 +22,7 @@ namespace FacebookEventParser.Selenium
         {
             _logger = logger;
             _eventParser = eventParser;
-            _titleRegex = new Regex("Veranstaltungsdetails für (.*) anzeigen", RegexOptions.Singleline);
+            _titleRegex = new Regex(@"\w{3,} für (.*) \w{3,}", RegexOptions.Singleline);
         }
 
         public List<Veranstaltung> ParseEventTabellen(ParserResults parserResults)

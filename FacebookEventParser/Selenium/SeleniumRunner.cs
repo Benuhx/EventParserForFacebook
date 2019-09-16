@@ -17,15 +17,15 @@ namespace FacebookEventParser.Selenium {
         private readonly ISeleniumService _seleniumService;
         private readonly ISeleniumInstanceService _seleniumInstanceService;
         private readonly IEventTabellenParser _eventTabellenParser;
-        private readonly IHtmlTabelleService _htmlTabelleService;
+        private readonly IHtmlService _htmlService;
         private readonly ILogger<SeleniumRunner> _logger;
         private readonly IWordPressApi _wordPressApi;
 
-        public SeleniumRunner(ISeleniumService seleniumService, ISeleniumInstanceService seleniumInstanceService, IEventTabellenParser eventTabellenParser, IHtmlTabelleService htmlTabelleService, ILogger<SeleniumRunner> logger, IWordPressApi wordPressApi) {
+        public SeleniumRunner(ISeleniumService seleniumService, ISeleniumInstanceService seleniumInstanceService, IEventTabellenParser eventTabellenParser, IHtmlService htmlService, ILogger<SeleniumRunner> logger, IWordPressApi wordPressApi) {
             _seleniumService = seleniumService;
             _seleniumInstanceService = seleniumInstanceService;
             _eventTabellenParser = eventTabellenParser;
-            _htmlTabelleService = htmlTabelleService;
+            _htmlService = htmlService;
             _logger = logger;
             _wordPressApi = wordPressApi;
         }
@@ -61,12 +61,12 @@ namespace FacebookEventParser.Selenium {
                 _seleniumInstanceService.Dispose();
             }
 
-            var htmlTabelle = _htmlTabelleService.BaueHtmlTabelle(events, pagesZumParsen);
+            var htmlTabelle = _htmlService.BaueHtml(events, pagesZumParsen);
             var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "JuLi-Events.html");
             _logger.LogInformation($"Speichere HTML-Tabelle nach {path}");
 
-            // var cred = new WordPressCredentials("***REMOVED***", "***REMOVED***", "***REMOVED***");
-            // await _wordPressApi.UpdatePage(468, htmlTabelle, cred);
+            var cred = new WordPressCredentials("***REMOVED***", "***REMOVED***", "***REMOVED***");
+            await _wordPressApi.UpdatePage(468, htmlTabelle, cred);
 
             if (File.Exists(path)) File.Delete(path);
             File.WriteAllText(path, htmlTabelle, Encoding.UTF8);

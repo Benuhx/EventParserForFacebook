@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using FacebookEventParser.OutputServices;
 using FacebookEventParser.Parser;
 using FacebookEventParser.Selenium;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,7 +34,7 @@ namespace FacebookEventParser
 
             services.AddLogging(configure => configure
                     .AddConsole())
-                    .Configure<LoggerFilterOptions>(options => options.MinLevel = LogLevel.Warning);
+                    .Configure<LoggerFilterOptions>(options => options.MinLevel = LogLevel.Information);
 
             var container = new Container();
             container.Configure(config =>
@@ -46,6 +47,7 @@ namespace FacebookEventParser
                 });
                 config.For<ISeleniumInstanceService>().Singleton().Use<SeleniumInstanceService>();
                 config.For<IRegExContainer>().Singleton().Use<RegExContainer>();
+                config.For<IHtmlService>().Use<HtmlService>();
                 config.Populate(services);
             });
 
