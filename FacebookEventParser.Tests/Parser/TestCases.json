@@ -11,12 +11,231 @@
   },
   {
     "EventTextArray": [
-        "Samstag, 11. Mai 2019 von 16:00 bis 16:45 UTC+02",
-        "City Forum, Hochstraße 39-41, 53879 Euskirchen",
-        "Veranstaltungsdetails anzeigen"
-      ],
+      "Samstag, 11. Mai 2019 von 16:00 bis 16:45 UTC+02",
+      "City Forum, Hochstraße 39-41, 53879 Euskirchen",
+      "Veranstaltungsdetails anzeigen"
+    ],
     "ZeitStart": "11.05.2019 - 16:00",
     "Ort": "City Forum, Hochstraße 39-41, 53879 Euskirchen",
+    "Stadt": ""
+  },
+  {
+    "EventTextArray": [
+      "16. Aug. um 16:00 – 18. Aug. um 13:00 UTC+02",
+      "Jugendherberge Münster - Jugendgästehaus Aasee",
+      "Münster",
+      "Veranstaltungsdetails anzeigen"
+    ],
+    "ZeitStart": "",
+    "Ort": "",
+    "Stadt": ""
+  },
+  {
+    "EventTextArray": [
+      "13. Sept. um 14:00 – 15. Sept. um 14:00 UTC+02",
+      "Junge Liberale JuLis",
+      "Berlin",
+      "Veranstaltungsdetails anzeigen"
+    ],
+    "ZeitStart": "",
+    "Ort": "",
+    "Stadt": ""
+  },
+  {
+    "EventTextArray": [
+      "12. Okt. – 13. Okt.",
+      "Weser-Ems-Hallen",
+      "Oldenburg"
+    ],
+    "ZeitStart": "",
+    "Ort": "",
+    "Stadt": ""
+  },
+  {
+    "EventTextArray": [
+      "Donnerstag, 25. Juli 2019 von 20:00 bis 22:00 UTC+02",
+      "Junge Liberale NRW",
+      "Düsseldorf"
+    ],
+    "ZeitStart": "",
+    "Ort": "",
+    "Stadt": ""
+  },
+  {
+    "EventTextArray": [
+      "Dienstag, 30. Juli 2019 von 19:00 bis 21:30 UTC+02",
+      "Köln Rheinpark",
+      "Köln, Deutschland"
+    ],
+    "ZeitStart": "",
+    "Ort": "",
+    "Stadt": ""
+  },
+  {
+    "EventTextArray": [
+      "Samstag, 3. August 2019 von 13:00 bis 16:00 UTC+02",
+      "FDP Leverkusen",
+      "Leverkusen"
+    ],
+    "ZeitStart": "",
+    "Ort": "",
+    "Stadt": ""
+  },
+  {
+    "EventTextArray": [
+      "Freitag, 28. Juni 2019 von 18:30 bis 23:59 UTC+02",
+      "Gaststätten, Restaurant Landgasthof Zum Alten Krug",
+      "Marquardt, Brandenburg, Germany",
+      "Veranstaltungsdetails anzeigen"
+    ],
+    "ZeitStart": "",
+    "Ort": "",
+    "Stadt": ""
+  },
+  {
+    "EventTextArray": [
+      "Donnerstag, 9. Mai 2019 von 17:30 bis 02:30 UTC+02",
+      "Veitshöchheim",
+      "Veitshöchheim",
+      "Veranstaltungsdetails anzeigen"
+    ],
+    "ZeitStart": "",
+    "Ort": "",
+    "Stadt": ""
+  },
+  {
+    "EventTextArray": [
+      "Sonntag, 5. Mai 2019 von 18:00 bis 20:00 UTC+02",
+      "Altes Pfandhaus",
+      "Köln, Deutschland",
+      "Veranstaltungsdetails anzeigen"
+    ],
+    "ZeitStart": "",
+    "Ort": "",
+    "Stadt": ""
+  },
+  {
+    "EventTextArray": [
+      "12. Apr. um 18:00 – 14. Apr. um 14:30 UTC+02",
+      "Maritim Hotel Bremen",
+      "Bremen",
+      "Veranstaltungsdetails anzeigen"
+    ],
+    "ZeitStart": "",
+    "Ort": "",
+    "Stadt": ""
+  },
+  {
+    "EventTextArray": [
+      "1. März um 18:00 – 3. März um 14:00 UTC+01",
+      "WeiberWirtschaft eG",
+      "Berlin",
+      "Veranstaltungsdetails anzeigen"
+    ],
+    "ZeitStart": "",
+    "Ort": "",
+    "Stadt": ""
+  },
+  {
+    "EventTextArray": [],
+    "ZeitStart": "",
+    "Ort": "",
+    "Stadt": ""
+  },
+  {
+    "EventTextArray": [],
+    "ZeitStart": "",
+    "Ort": "",
+    "Stadt": ""
+  },
+  {
+    "EventTextArray": [],
+    "ZeitStart": "",
+    "Ort": "",
+    "Stadt": ""
+  },
+  {
+    "EventTextArray": [],
+    "ZeitStart": "",
+    "Ort": "",
+    "Stadt": ""
+  },
+  {
+    "EventTextArray": [],
+    "ZeitStart": "",
+    "Ort": "",
+    "Stadt": ""
+  },
+  {
+    "EventTextArray": [],
+    "ZeitStart": "",
+    "Ort": "",
+    "Stadt": ""
+  },
+  {
+    "EventTextArray": [],
+    "ZeitStart": "",
+    "Ort": "",
+    "Stadt": ""
+  },
+  {
+    "EventTextArray": [],
+    "ZeitStart": "",
+    "Ort": "",
+    "Stadt": ""
+  },
+  {
+    "EventTextArray": [],
+    "ZeitStart": "",
+    "Ort": "",
+    "Stadt": ""
+  },
+  {
+    "EventTextArray": [],
+    "ZeitStart": "",
+    "Ort": "",
+    "Stadt": ""
+  },
+  {
+    "EventTextArray": [],
+    "ZeitStart": "",
+    "Ort": "",
+    "Stadt": ""
+  },
+  {
+    "EventTextArray": [],
+    "ZeitStart": "",
+    "Ort": "",
+    "Stadt": ""
+  },
+  {
+    "EventTextArray": [],
+    "ZeitStart": "",
+    "Ort": "",
+    "Stadt": ""
+  },
+  {
+    "EventTextArray": [],
+    "ZeitStart": "",
+    "Ort": "",
+    "Stadt": ""
+  },
+  {
+    "EventTextArray": [],
+    "ZeitStart": "",
+    "Ort": "",
+    "Stadt": ""
+  },
+  {
+    "EventTextArray": [],
+    "ZeitStart": "",
+    "Ort": "",
+    "Stadt": ""
+  },
+  {
+    "EventTextArray": [],
+    "ZeitStart": "",
+    "Ort": "",
     "Stadt": ""
   }
 ]

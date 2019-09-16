@@ -1,21 +1,23 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using FacebookEventParser.Parser;
 using FacebookEventParser.Selenium;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using StructureMap;
+using WordpressPublisher;
 
 namespace FacebookEventParser
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             using (var container = KonfiguriereDependencyInjectionUndErstelleContainer())
             {
                 var mainRunner = container.GetInstance<ISeleniumRunner>();
-                mainRunner.Run();
+                await mainRunner.Run();
 
                 if (Debugger.IsAttached)
                 {
@@ -38,7 +40,8 @@ namespace FacebookEventParser
             {
                 config.Scan(x =>
                 {
-                    x.AssemblyContainingType(typeof(Program));
+                    x.AssemblyContainingType<Program>();
+                    x.AssemblyContainingType<WordPressApi>();
                     x.WithDefaultConventions();
                 });
                 config.For<ISeleniumInstanceService>().Singleton().Use<SeleniumInstanceService>();
