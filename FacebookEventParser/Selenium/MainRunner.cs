@@ -86,7 +86,7 @@ namespace FacebookEventParser.Selenium {
                 await _telegramApi.SendeNachricht(logStr, false);
             }
             catch (Exception e) {
-                logStr = "Fehler: WordPress Update NICHT erfolgreich";
+                logStr = $"Fehler: WordPress Update NICHT erfolgreich: {e}";
                 _logger.LogError(logStr);
                 await _telegramApi.SendeNachricht(logStr, true);
             }
