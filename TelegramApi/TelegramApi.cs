@@ -5,7 +5,7 @@ using Telegram.Bot.Args;
 
 namespace TelegramApi {
     public interface ITelegramApi {
-        Task SendeNachricht(string txt);
+        Task SendeNachricht(string txt, bool enableNotification);
     }
 
     public class TelegramApi : ITelegramApi {
@@ -33,9 +33,9 @@ namespace TelegramApi {
             await _botClient.SendTextMessageAsync(chatId, "Du wurdest zur Broadcast-Liste hinzugefügt");
         }
 
-        public async Task SendeNachricht(string txt) {
+        public async Task SendeNachricht(string txt, bool enableNotification) {
             foreach (var curChatId in _chatIds) {
-                await _botClient.SendTextMessageAsync(curChatId, txt);
+                await _botClient.SendTextMessageAsync(curChatId, txt, disableNotification: !enableNotification);
             }
         }
     }

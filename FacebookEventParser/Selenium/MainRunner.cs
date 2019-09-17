@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
+using System.Linq;
 using System.Threading.Tasks;
 using FacebookEventParser.DTO;
 using FacebookEventParser.OutputServices;
@@ -10,20 +9,20 @@ using TelegramApi;
 using WordpressPublisher;
 
 namespace FacebookEventParser.Selenium {
-    public interface ISeleniumRunner {
+    public interface IMainRunner {
         Task Run();
     }
 
-    public class SeleniumRunner : ISeleniumRunner {
+    public class MainRunner : IMainRunner {
         private readonly ISeleniumService _seleniumService;
         private readonly ISeleniumInstanceService _seleniumInstanceService;
         private readonly IEventTabellenParser _eventTabellenParser;
         private readonly IHtmlService _htmlService;
-        private readonly ILogger<SeleniumRunner> _logger;
+        private readonly ILogger<MainRunner> _logger;
         private readonly IWordPressApi _wordPressApi;
         private readonly ITelegramApi _telegramApi;
 
-        public SeleniumRunner(ISeleniumService seleniumService, ISeleniumInstanceService seleniumInstanceService, IEventTabellenParser eventTabellenParser, IHtmlService htmlService, ILogger<SeleniumRunner> logger, IWordPressApi wordPressApi, ITelegramApi telegramApi) {
+        public MainRunner(ISeleniumService seleniumService, ISeleniumInstanceService seleniumInstanceService, IEventTabellenParser eventTabellenParser, IHtmlService htmlService, ILogger<MainRunner> logger, IWordPressApi wordPressApi, ITelegramApi telegramApi) {
             _seleniumService = seleniumService;
             _seleniumInstanceService = seleniumInstanceService;
             _eventTabellenParser = eventTabellenParser;
@@ -34,7 +33,10 @@ namespace FacebookEventParser.Selenium {
         }
 
         public async Task Run() {
-            _logger.LogInformation($"Start am {DateTime.Now.ToShortDateString()} um {DateTime.Now.ToShortTimeString()} Uhr");
+            var logStr = $"Start am {DateTime.Now.ToShortDateString()} um {DateTime.Now.ToShortTimeString()} Uhr";
+            _logger.LogInformation(logStr);
+            await _telegramApi.SendeNachricht(logStr, false);
+
 
             var pagesZumParsen = new List<FacebookPage> {
                 new FacebookPage("JuLis Bundesverband", "jungeliberale"),
@@ -64,13 +66,30 @@ namespace FacebookEventParser.Selenium {
                 _seleniumInstanceService.Dispose();
             }
 
-            await _telegramApi.SendeNachricht($"Ich habe {events.Count} Events gefunden");
+            var eventCount = events
+                .GroupBy(x => x.Name, y => y.Veranstaltungen.Count)
+                .OrderByDescending(x => x.First())
+                .ThenBy(x => x.Key)
+                .Select(x => $"{x.Key}: {x.First()}")
+                .ToList();
+            logStr = $"Folgende Events gefunden:{Environment.NewLine}{string.Join(Environment.NewLine, eventCount)}";
+            _logger.LogInformation(logStr);
+            await _telegramApi.SendeNachricht(logStr, false);
 
+            
             var htmlTabelle = _htmlService.BaueHtml(events, pagesZumParsen);
-            var cred = new WordPressCredentials("***REMOVED***", "***REMOVED***", "***REMOVED***");
-            await _wordPressApi.UpdatePage(468, htmlTabelle, cred);
-
-            await _telegramApi.SendeNachricht($"Und die Homepage ist auch fertig :)");
+            try {
+                var cred = new WordPressCredentials("***REMOVED***", "***REMOVED***", "***REMOVED***");
+                await _wordPressApi.UpdatePage(468, htmlTabelle, cred);
+                logStr = "WordPress Update erfolgreich";
+                _logger.LogInformation(logStr);
+                await _telegramApi.SendeNachricht(logStr, false);
+            }
+            catch (Exception e) {
+                logStr = "Fehler: WordPress Update NICHT erfolgreich";
+                _logger.LogError(logStr);
+                await _telegramApi.SendeNachricht(logStr, true);
+            }
         }
 
         private string GetMobileUrlOfPage(string pageName) {

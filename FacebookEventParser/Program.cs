@@ -18,7 +18,7 @@ namespace FacebookEventParser
         {
             using (var container = KonfiguriereDependencyInjectionUndErstelleContainer())
             {
-                var mainRunner = container.GetInstance<ISeleniumRunner>();
+                var mainRunner = container.GetInstance<IMainRunner>();
                 await mainRunner.Run();
 
                 if (Debugger.IsAttached)

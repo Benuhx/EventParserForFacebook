@@ -39,14 +39,9 @@ namespace WordpressPublisher
                 };
 
                 var sucess = await client.EditPostAsync(post);
-
-                if (sucess)
+                if (!sucess)
                 {
-                    _logger.LogInformation("EditPostAsync erfolgreich");
-                }
-                else
-                {
-                    _logger.LogError("EditPostAsync hat false zurückgegeben");
+                    throw new Exception($"EditPostAsync gab false zurück :(");
                 }
             }
         }
