@@ -24,7 +24,7 @@ namespace FacebookEventParser.OutputServices {
                     sb.AppendLine(@"<div class=""row"">");
                 }
 
-                sb.AppendLine("<div class=\"col-sm-6\">");
+                sb.AppendLine("<div class=\"col-sm-6 inner\">");
 
                 var title = ErsetzeLeerstring(curVeranstaltung.Title);
                 sb.AppendLine($"<h3>{title}</h3>");
@@ -106,7 +106,7 @@ namespace FacebookEventParser.OutputServices {
                 str = veranstaltung.Stadt;
             }
 
-            if (!string.IsNullOrWhiteSpace(veranstaltung.Ort) && !string.IsNullOrWhiteSpace(veranstaltung.Stadt)) {
+            if (!string.IsNullOrWhiteSpace(veranstaltung.Ort) && !string.IsNullOrWhiteSpace(veranstaltung.Stadt) && veranstaltung.Ort != veranstaltung.Stadt) {
                 str = $"{str}, {veranstaltung.Ort}";
             }
             else if (!string.IsNullOrWhiteSpace(veranstaltung.Ort) && string.IsNullOrWhiteSpace(veranstaltung.Stadt)) {

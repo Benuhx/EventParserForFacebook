@@ -82,7 +82,7 @@ namespace FacebookEventParser {
             try {
                 var cred = new WordPressCredentials("***REMOVED***", "***REMOVED***", "***REMOVED***");
                 await _wordPressApi.UpdatePage(468, htmlTabelle, cred);
-                logStr = "WordPress Update erfolgreich";
+                logStr = $"WordPress Update erfolgreich{Environment.NewLine}***REMOVED***/veranstaltungsuebersicht/";
                 _logger.LogInformation(logStr);
                 await _telegramApi.SendeNachricht(logStr, false);
             }
