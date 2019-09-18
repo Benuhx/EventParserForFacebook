@@ -4,11 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using FacebookEventParser.DTO;
 using FacebookEventParser.OutputServices;
+using FacebookEventParser.Selenium;
 using Microsoft.Extensions.Logging;
 using TelegramApi;
 using WordpressPublisher;
 
-namespace FacebookEventParser.Selenium {
+namespace FacebookEventParser {
     public interface IMainRunner {
         Task Run();
     }
