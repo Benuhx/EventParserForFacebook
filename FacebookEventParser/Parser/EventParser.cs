@@ -83,7 +83,7 @@ namespace FacebookEventParser.Parser
                 // 01. September
                 new RegExDateTimeFormat(_regExContainer.GetRegex(@"(\d{2}. \w{3,9})"), "dd. MMMM", false),
                 // 1. September
-                new RegExDateTimeFormat(_regExContainer.GetRegex(@"(\d{1}. \w{3,9})"), "d. MMMM yyyy", false),
+                new RegExDateTimeFormat(_regExContainer.GetRegex(@"(\d{1}. \w{3,9})"), "d. MMMM", false),
                 // 01.09
                 new RegExDateTimeFormat(_regExContainer.GetRegex(@"(\d{2}. \w{3,9})"), "dd.MM", false),
             };
@@ -155,8 +155,10 @@ namespace FacebookEventParser.Parser
         private string ParseStadt()
         {
             var lines = _eventText.Split(Environment.NewLine);
-            if (lines.Length < 4) return string.Empty;
-            return lines[2].Trim();
+            if (lines.Length <= 2) return string.Empty;
+            var stadt =  lines[2].Trim();
+            if (stadt.ToLower().Contains("veranstaltung")) return string.Empty;
+            return stadt;
         }
     }
 }

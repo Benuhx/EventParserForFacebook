@@ -34,17 +34,17 @@ namespace FacebookEventParser.Tests.Parser
 
                 if (curTestCase.Ort != erstellteVeranstaltung.Ort)
                 {
-                    errorTxt.AppendLine($"Fehler bei {Environment.NewLine}'{curTestCase.EventText}'{Environment.NewLine}Der Ort stimmt nicht. Erwartet: '{curTestCase.Ort}' ### ist: '{erstellteVeranstaltung.Ort}'");
+                    errorTxt.AppendLine($"Fehler bei {Environment.NewLine}'{curTestCase.EventText}'{Environment.NewLine}Ort stimmt nicht. Erwartet: '{curTestCase.Ort}' ### ist: '{erstellteVeranstaltung.Ort}'");
                 }
 
                 if (curTestCase.Stadt != erstellteVeranstaltung.Stadt)
                 {
-                    errorTxt.AppendLine($"Fehler bei {Environment.NewLine}'{curTestCase.EventText}'{Environment.NewLine}Die Stadt stimmt nicht. Erwartet: '{curTestCase.Stadt}' ### ist: '{erstellteVeranstaltung.Stadt}'");
+                    errorTxt.AppendLine($"Fehler bei {Environment.NewLine}'{curTestCase.EventText}'{Environment.NewLine}Stadt stimmt nicht. Erwartet: '{curTestCase.Stadt}' ### ist: '{erstellteVeranstaltung.Stadt}'");
                 }
 
                 if (curTestCase.ZeitStart != erstellteVeranstaltung.ZeitStart)
                 {
-                    errorTxt.AppendLine($"Fehler bei {Environment.NewLine}'{curTestCase.EventText}'{Environment.NewLine}Der Ort stimmt nicht. Erwartet: '{curTestCase.ZeitStart}' ### ist: '{erstellteVeranstaltung.ZeitStart}'");
+                    errorTxt.AppendLine($"Fehler bei {Environment.NewLine}'{curTestCase.EventText}'{Environment.NewLine}ZeitStart stimmt nicht. Erwartet: '{curTestCase.ZeitStart}' ### ist: '{erstellteVeranstaltung.ZeitStart}'");
                 }
 
                 testCaseCounter++;
