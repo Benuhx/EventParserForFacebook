@@ -1,9 +1,8 @@
 # EventParserForFacebook
 EventParserForFacebook is a parser for the event section of Facebook Pages (e.g. [GitHub events on Facebook](https://de-de.facebook.com/pg/GitHub/events/?ref=page_internal)).
 
-EventParserForFacebook parses the HTML-Structure of the Facebook pages and extracts the events as JSON or HTML. Optionally the HTML can be uploaded to a Worpress website. You can scan multiple pages at once and publish all of the events on one WordPress webiste.
+EventParserForFacebook parses the HTML-Structure of the Facebook pages and extracts the events as JSON or HTML. Optionally the HTML can be uploaded to a Wordpress website. You can scan multiple pages at once and publish all events on one WordPress website.
 
-# Build
 [![Build status](https://dev.azure.com/jannis-muehlemeyer/Default/_apis/build/status/FacebookEventParser)](https://dev.azure.com/jannis-muehlemeyer/Default/_build/latest?definitionId=15)
 
 # Why
@@ -13,9 +12,9 @@ Or you use this tool and generate a dashboard about all events on one website wi
 
 # HowTo Use
 1. [Download Release binary](https://github.com/Benuhx/EventParserForFacebook/releases) (available for Windows, Linux, Raspberry Pi and MacOS)
-2. Start FacebookEventParser once. An emtpy config file will be generated
-3. Modfiy the config file (see section below)
-4. Run FacebookEventParser regulary
+2. Start FacebookEventParser once. An empty config file will be generated
+3. Modify the config file (see section below)
+4. Run FacebookEventParser regularly
 
 ## HowTo Config
 The config is located next to the executables. It is called 'config.yaml'
