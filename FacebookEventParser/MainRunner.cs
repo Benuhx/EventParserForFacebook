@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FacebookEventParser.Config;
 using FacebookEventParser.DTO;
 using FacebookEventParser.OutputServices;
 using FacebookEventParser.Selenium;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using TelegramApi;
 using WordpressPublisher;
 
@@ -22,8 +24,10 @@ namespace FacebookEventParser {
         private readonly ILogger<MainRunner> _logger;
         private readonly IWordPressApi _wordPressApi;
         private readonly ITelegramApi _telegramApi;
+        private readonly IYamlConfigService _configService;
+        private readonly IFileWriter _fileWriter;
 
-        public MainRunner(ISeleniumService seleniumService, ISeleniumInstanceService seleniumInstanceService, IEventTabellenParser eventTabellenParser, IHtmlService htmlService, ILogger<MainRunner> logger, IWordPressApi wordPressApi, ITelegramApi telegramApi) {
+        public MainRunner(ISeleniumService seleniumService, ISeleniumInstanceService seleniumInstanceService, IEventTabellenParser eventTabellenParser, IHtmlService htmlService, ILogger<MainRunner> logger, IWordPressApi wordPressApi, ITelegramApi telegramApi, IYamlConfigService configService, IFileWriter fileWriter) {
             _seleniumService = seleniumService;
             _seleniumInstanceService = seleniumInstanceService;
             _eventTabellenParser = eventTabellenParser;
@@ -31,29 +35,26 @@ namespace FacebookEventParser {
             _logger = logger;
             _wordPressApi = wordPressApi;
             _telegramApi = telegramApi;
+            _configService = configService;
+            _fileWriter = fileWriter;
         }
 
         public async Task Run() {
-            var logStr = $"Start am {DateTime.Now.ToShortDateString()} um {DateTime.Now.ToShortTimeString()} Uhr";
+            var logStr = $"Start {DateTime.Now.ToShortDateString()} at {DateTime.Now.ToShortTimeString()}";
             _logger.LogInformation(logStr);
+
+            if (!_configService.ConfigFileExistiert()) {
+                _configService.SchreibeLeeresConfigFile();
+                _logger.LogWarning("Empty Config file created. Modify this file and restart app");
+                return;
+            }
+
+            var config = await _configService.LeseConfigFile();
+            _telegramApi.SetTelegramBotToken(config.EnableTelegramBotIntegration, config.TelegramBotToken);
+
             await _telegramApi.SendeNachricht(logStr, false);
 
-
-            var pagesZumParsen = new List<FacebookPage> {
-                new FacebookPage("JuLis Bundesverband", "jungeliberale"),
-                new FacebookPage("JuLis NRW", "julisnrw"),
-                new FacebookPage("JuLis Ruhrgebiet", "julisruhrgebiet"),
-                new FacebookPage("JuLis Dortmund", "julisdortmund"),
-                new FacebookPage("JuLis Bochum", "julisbochum"),
-                new FacebookPage("JuLis Essen", "julisessen"),
-                new FacebookPage("JuLis Herne", "Julis-Herne-517505588327635"),
-                new FacebookPage("JuLis Mülheim an der Ruhr", "julismh"),
-                new FacebookPage("JuLis Gelsenkirchen", "JuLis-Gelsenkirchen-314536558629253"),
-                new FacebookPage("JuLis Bottrop", "julis.bottrop"),
-                new FacebookPage("JuLis Oberhausen", "oberhausen.julis"),
-                new FacebookPage("JuLis Recklinghausen", "julis.kv.re")
-            };
-
+            var pagesZumParsen = config.FacebookWebsites;
             var events = new List<Verbandsebene>();
             try {
                 foreach (var curPage in pagesZumParsen) {
@@ -73,23 +74,22 @@ namespace FacebookEventParser {
                 .ThenBy(x => x.Key)
                 .Select(x => $"{x.Key}: {x.First()}")
                 .ToList();
-            logStr = $"Folgende Events gefunden:{Environment.NewLine}{string.Join(Environment.NewLine, eventCount)}";
+            logStr = $"The following events were found:{Environment.NewLine}{string.Join(Environment.NewLine, eventCount)}";
             _logger.LogInformation(logStr);
             await _telegramApi.SendeNachricht(logStr, false);
-
             
-            var htmlTabelle = _htmlService.BaueHtml(events, pagesZumParsen);
-            try {
-                var cred = new WordPressCredentials("***REMOVED***", "***REMOVED***", "***REMOVED***");
-                await _wordPressApi.UpdatePage(468, htmlTabelle, cred);
-                logStr = $"WordPress Update erfolgreich{Environment.NewLine}***REMOVED***/veranstaltungsuebersicht/";
-                _logger.LogInformation(logStr);
-                await _telegramApi.SendeNachricht(logStr, false);
+            if (config.WriteEventsAsHtmlToFile) {
+                await _fileWriter.WriteToFile(JsonConvert.SerializeObject(events, Formatting.Indented), "output.json");
             }
-            catch (Exception e) {
-                logStr = $"Fehler: WordPress Update NICHT erfolgreich: {e}";
-                _logger.LogError(logStr);
-                await _telegramApi.SendeNachricht(logStr, true);
+
+            if (config.WriteEventsAsHtmlToFile) {
+                var htmlTabelle = _htmlService.BaueHtml(events, pagesZumParsen);
+                await _fileWriter.WriteToFile(htmlTabelle, "output.html");
+            }
+
+            if (config.UploadEventsToWordpressWebsite) {
+                var htmlTabelle = _htmlService.BaueHtml(events, pagesZumParsen);
+                await VeroeffentlicheHtmlBeiWordPress(config, htmlTabelle);
             }
         }
 
@@ -99,6 +99,22 @@ namespace FacebookEventParser {
 
         private string GetDesktopUrlOfPage(string pageName) {
             return $"https://facebook.com/pg/{pageName}/events/";
+        }
+
+        private async Task VeroeffentlicheHtmlBeiWordPress(Config.Config config, string htmlTabelle) {
+            string logStr;
+            try {
+                var cred = config.WordPressCredentials;
+                await _wordPressApi.UpdatePage(config.WordpressPageId, htmlTabelle, cred);
+                logStr = "WordPress Update successful";
+                _logger.LogInformation(logStr);
+                await _telegramApi.SendeNachricht(logStr, false);
+            }
+            catch (Exception e) {
+                logStr = $"Error: WordPress Update NOT successful: {e}";
+                _logger.LogError(logStr);
+                await _telegramApi.SendeNachricht(logStr, true);
+            }
         }
     }
 }

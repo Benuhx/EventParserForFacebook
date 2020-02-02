@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using FacebookEventParser.OutputServices;
 using FacebookEventParser.Parser;
@@ -52,6 +53,7 @@ namespace FacebookEventParser
                 config.For<ITelegramApi>().Singleton().Use<TelegramApi.TelegramApi>();
                 
                 config.For<IHtmlService>().Use<HtmlService>();
+
                 config.Populate(services);
             });
 

@@ -9,6 +9,10 @@
             BaseUrl = baseUrl;
         }
 
+        public WordPressCredentials() {
+
+        }
+
         public string Username { get; private set; }
         public string Password {get; private set;}
         public string BaseUrl { get; private set; }
