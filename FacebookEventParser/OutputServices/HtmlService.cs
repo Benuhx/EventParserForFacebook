@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 using FacebookEventParser.DTO;
 
 namespace FacebookEventParser.OutputServices {
+    public interface IHtmlService {
+        string BaueHtml(List<Verbandsebene> verbaendeMitEvents, List<FacebookPage> geparstePages);
+    }
+
     internal class HtmlService : IHtmlService {
         public string BaueHtml(List<Verbandsebene> verbaendeMitEvents, List<FacebookPage> geparstePages) {
             var sortierteVeranstaltungen = GetVeranstaltungMitVerband(verbaendeMitEvents);

@@ -43,13 +43,13 @@ namespace TelegramApi {
         private async void BotClientOnOnMessage(object sender, MessageEventArgs e) {
             var chatId = e.Message.Chat.Id;
             if (_chatIds.Contains(chatId)) {
-                await _botClient.SendTextMessageAsync(chatId, "Du bist bereits in der Broadcast-Liste");
+                await _botClient.SendTextMessageAsync(chatId, "You are already on the broadcast list");
                 return;
             }
 
             _chatIds.Add(chatId);
             _telegramPersistenceService.SpeichereChatIds(_chatIds);
-            await _botClient.SendTextMessageAsync(chatId, "Du wurdest zur Broadcast-Liste hinzugefügt");
+            await _botClient.SendTextMessageAsync(chatId, "You have been added to the broadcast list");
         }
     }
 }

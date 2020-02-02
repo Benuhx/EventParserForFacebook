@@ -24,7 +24,7 @@ namespace FacebookEventParser
 
                 if (Debugger.IsAttached)
                 {
-                    Console.WriteLine("Ende, Taste zum beenden drücken");
+                    Console.WriteLine("Press any key to exit");
                     Console.ReadKey();
                 }
             }
