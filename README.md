@@ -12,7 +12,7 @@ Imagine that you have multiple subdivisions in your association and all of them 
 Or you use this tool and generate a dashboard about all events on one website with automatic updates :)
 
 # HowTo Use
-1. Download Release binary (avaible for Windows x64 or linux-arm e.g. RaspberryPi)
+1. [Download Release binary](https://github.com/Benuhx/EventParserForFacebook/releases) (available for Windows, Linux, Raspberry Pi and MacOS)
 2. Start FacebookEventParser once. An emtpy config file will be generated
 3. Modfiy the config file (see section below)
 4. Run FacebookEventParser regulary
