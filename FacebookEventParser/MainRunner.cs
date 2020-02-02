@@ -78,8 +78,9 @@ namespace FacebookEventParser {
             _logger.LogInformation(logStr);
             await _telegramApi.SendeNachricht(logStr, false);
             
-            if (config.WriteEventsAsHtmlToFile) {
-                await _fileWriter.WriteToFile(JsonConvert.SerializeObject(events, Formatting.Indented), "output.json");
+            if (config.WriteEventsAsJsonToFile) {
+                var associations = events.Select(Association.CreateFromVerbandsebene).ToList(); //Englische Übersetzung für den Export erstellen
+                await _fileWriter.WriteToFile(JsonConvert.SerializeObject(associations, Formatting.Indented), "output.json");
             }
 
             if (config.WriteEventsAsHtmlToFile) {
